@@ -1,1 +1,1 @@
-Send a daily request to french nomad map to set your location
+Automatically update your location on [Nomadmap](https://www.nomadmap.co) as you move around

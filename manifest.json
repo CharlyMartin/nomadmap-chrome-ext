@@ -1,25 +1,29 @@
 {
-"manifest_version": 2,
+  "name": "Nomadmap Location Update",
+  "description": "Automatically update your location on Nomadmap as you move around",
+  "author": "Charly MARTIN",
+  "version": "1.1.0",
+  "manifest_version": 2,
 
-"name": "",
-"description": "Send an daily request to french nomad map, to update your location",
-"version": "1.0.0",
-"permissions": [
-"storage",
-"alarms",
-"background",
-"geolocation",
-"http://*/",
-"https://*/"
-],
-"background": {
-"scripts": ["background.js"]
-},
-"options_ui": {
-"page": "options.html",
-"chrome_style": true
-},
-"icons": {
-"160": "icon.png"
-}
+  "permissions": [
+    "storage",
+    "alarms",
+    "background",
+    "geolocation",
+    "http://*/",
+    "https://*/"
+  ],
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
+
+  "icons": {
+    "160": "icon.png"
+  }
 }
