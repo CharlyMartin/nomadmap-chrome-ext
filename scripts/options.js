@@ -1,27 +1,37 @@
-'use strict';
+const email = document.querySelector('input#email').value;
+const saveBtn = document.querySelector('button#save');
+const status = document.querySelector('div#status-container');
 
-// Saves options to chrome.storage
 
-function save_options() {
-    var email = document.getElementById('email').value;
-    chrome.storage.sync.set({
-	email: email
-    }, function () {
-	console.log("Email saved")
-	var status = document.getElementById('status');
-	status.textContent = 'Email saved';
-    });
-}
+function storeEmail() {
+  console.log("Storing Email...")
 
-// Restores preferences
-// stored in chrome.storage.
-function restore_options() {
-    chrome.storage.sync.get({
-	email: ''
-    }, function (items) {
-	document.getElementById('email').value = items.email;
-    });
-}
+  if (!email) {
+    message('Error: No email specified');
+    return;
+  };
 
-document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('save').addEventListener('click', save_options);
+  chrome.storage.sync.set({
+    email: email,
+  }, () => {
+    status.textContent = 'Email saved!';
+
+    window.setTimeout(() => {
+      status.textContent = '';
+    }, 2000);
+  });
+};
+
+function retrieveEmail() {
+  console.log("Retrieving Email...");
+
+  chrome.storage.sync.get({
+    email: 'email'
+  }, function(items) {
+    email = items.email;
+  });
+};
+
+
+document.addEventListener('DOMContentLoaded', retrieveEmail);
+saveBtn.addEventListener('click', storeEmail);
