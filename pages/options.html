@@ -2,16 +2,19 @@
 <html>
 
 <head>
+  <link rel="stylesheet" href="pages/options.css">
 </head>
 
 <body>
-  <h1>French nomads map</h1>
-  <div>
-    <label for="email">Email</label>
-    <input placeholder="contact@samuel-berthe.fr" size="30" type="text" id="email" name="email" />
+  <h1>Please enter your email</h1>
+  <p>The one you used to sign-up on Nomadmap</p>
+
+  <div class="email-container">
+    <input placeholder="Your email goes here" size="30" type="text" id="email" name="email" />
+    <button id="save">Save</button>
   </div>
-  <button id="save">Save</button>
-  <div id="status"></div>
+
+  <div id="status-container"></div>
 
   <script src="options.js"></script>
 </body>
