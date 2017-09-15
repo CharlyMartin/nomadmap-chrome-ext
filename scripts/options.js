@@ -4,21 +4,6 @@ const status = document.querySelector('div#status-container');
 
 
 function storeData() {
-  let username = usernameInput.value
-  let callback;
-
-  console.log(username)
-
-  // Return if empty
-  if (!username) {
-    alert('No username specified');
-    return;
-  };
-
-  // Check validity
-  callback = checkValidity(username)
-  console.log('callback: ',  callback)
-
   // store data
   chrome.storage.sync.set({
     username: username,
@@ -31,7 +16,14 @@ function storeData() {
   });
 };
 
-function checkValidity(username) {
+function empty(username) {
+  if (!username) {
+    alert('No username specified');
+    return true;
+  };
+};
+
+function fetching(username) {
   let result;
 
   window.fetch(`https://www.nomadmap.co/api/v1/nomads/${username}`)
@@ -44,16 +36,37 @@ function checkValidity(username) {
   return result
 };
 
-function retrieveEmail() {
-  console.log("Retrieving Email...");
-
-  chrome.storage.sync.get({
-    username: 'username'
-  }, function(items) {
-    username = items.username;
-  });
+function invalid(json) {
+  if (json.error) {
+    alert('The username you specified does not exist on Nomadmap');
+    return true
+  };
 };
 
+// function retrieveEmail() {
+//   console.log("Retrieving Email...");
+
+//   chrome.storage.sync.get({
+//     username: 'username'
+//   }, function(items) {
+//     username = items.username;
+//   });
+// };
+
+
+function init() {
+  let username = usernameInput.value;
+  console.log(username);
+
+  // Return if empty
+  if (empty(username)) {return};
+
+  // Return if not valid
+  let apiCallback = fetching(username)
+  console.log(apiCallback)
+};
 
 // document.addEventListener('DOMContentLoaded', retrieveEmail);
-saveBtn.addEventListener('click', storeData);
+saveBtn.addEventListener('click', init);
+
+// chrome-extension://hplnkkekimoegbellfpjmnekdkcjlkfg/pages/options.html
