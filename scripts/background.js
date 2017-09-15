@@ -8,7 +8,7 @@ function createAlarm() {
   console.log(arguments.callee.name);
 
  chrome.alarms.create(alarm, {
-   periodInMinutes: (0.1)
+   periodInMinutes: (1)
  });
 };
 
@@ -42,15 +42,13 @@ function fetch(lat, lgn) {
 
   window.fetch(`https://www.nomadmap.co/api/v1/nomads/${username}`, {
     method: 'PUT',
-    headers: {
+    headers:  new Headers({
+      'Content-Type': 'application/json',
       'token': `${Math.floor(json.lat)**Math.floor(json.lgn)}`
-    },
+    }),
     body: {
       data: json
-    };
-  })
-  .then(function(response) {
-    console.log(response)
+    }
   });
 };
 
