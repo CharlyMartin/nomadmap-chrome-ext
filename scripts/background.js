@@ -1,10 +1,11 @@
 // 1. Variables
 const alarm = 'Daily Location Update';
 let username = localStorage.getItem("username");
+const optionPage = 'pages/options.html'
 
 // 2. Functions
 function createAlarm() {
-console.log(arguments.callee.name);
+  console.log(arguments.callee.name);
 
  chrome.alarms.create(alarm, {
    periodInMinutes: (0.1)
@@ -38,6 +39,10 @@ function fetch(lat, lgn) {
 function empty(stuff) {
   if (stuff === null) {return true};
 };
+
+function open(tab) {
+  chrome.tabs.create({url: tab});
+}
 
 // chrome.alarms.create("daily-location-update", {
 //     "periodInMinutes": 60 * 12
@@ -85,8 +90,6 @@ function empty(stuff) {
 chrome.alarms.onAlarm.addListener(getBrowserLocation);
 
 chrome.runtime.onInstalled.addListener(function(details){
-    if (empty(username)) {
-      chrome.tabs.create({url: "pages/options.html"});
-    };
+    if (empty(username)) {open(optionPage)};
     createAlarm();
 });
