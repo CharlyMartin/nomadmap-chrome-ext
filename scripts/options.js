@@ -1,37 +1,59 @@
-const email = document.querySelector('input#email').value;
+const usernameInput = document.querySelector('input#username');
 const saveBtn = document.querySelector('button#save');
 const status = document.querySelector('div#status-container');
 
 
-function storeEmail() {
-  console.log("Storing Email...")
+function storeData() {
+  let username = usernameInput.value
+  let callback;
 
-  if (!email) {
-    message('Error: No email specified');
+  console.log(username)
+
+  // Return if empty
+  if (!username) {
+    alert('No username specified');
     return;
   };
 
+  // Check validity
+  callback = checkValidity(username)
+  console.log('callback: ',  callback)
+
+  // store data
   chrome.storage.sync.set({
-    email: email,
+    username: username,
   }, () => {
-    status.textContent = 'Email saved!';
+    status.textContent = 'Username saved!';
 
     window.setTimeout(() => {
       status.textContent = '';
-    }, 2000);
+    }, 4000);
   });
+};
+
+function checkValidity(username) {
+  let result;
+
+  window.fetch(`https://www.nomadmap.co/api/v1/nomads/${username}`)
+  .then(response => response.json())
+  .then(data => {
+    result = data
+    console.log(result)
+  });
+
+  return result
 };
 
 function retrieveEmail() {
   console.log("Retrieving Email...");
 
   chrome.storage.sync.get({
-    email: 'email'
+    username: 'username'
   }, function(items) {
-    email = items.email;
+    username = items.username;
   });
 };
 
 
-document.addEventListener('DOMContentLoaded', retrieveEmail);
-saveBtn.addEventListener('click', storeEmail);
+// document.addEventListener('DOMContentLoaded', retrieveEmail);
+saveBtn.addEventListener('click', storeData);
