@@ -3,19 +3,6 @@ const saveBtn = document.querySelector('button#save');
 const status = document.querySelector('div#status-container');
 
 
-function storeData() {
-  // store data
-  chrome.storage.sync.set({
-    username: username,
-  }, () => {
-    status.textContent = 'Username saved!';
-
-    window.setTimeout(() => {
-      status.textContent = '';
-    }, 4000);
-  });
-};
-
 function empty(username) {
   if (!username) {
     alert('No username specified');
@@ -43,6 +30,19 @@ function invalid(json) {
   };
 };
 
+function storeData() {
+  // store data
+  chrome.storage.sync.set({
+    username: username,
+  }, () => {
+    status.textContent = 'Username saved!';
+
+    window.setTimeout(() => {
+      status.textContent = '';
+    }, 4000);
+  });
+};
+
 // function retrieveEmail() {
 //   console.log("Retrieving Email...");
 
@@ -61,9 +61,15 @@ function init() {
   // Return if empty
   if (empty(username)) {return};
 
-  // Return if not valid
+  // calling API to get JSON
   let apiCallback = fetching(username)
   console.log(apiCallback)
+
+  // Return if invalid username
+  if (invalid(apiCallback)) {return}
+
+  // storing username in local storage
+  // store(username)
 };
 
 // document.addEventListener('DOMContentLoaded', retrieveEmail);
