@@ -1,7 +1,7 @@
 // 1. Variables
 const alarm = 'Daily Location Update';
 let username = localStorage.getItem("username");
-const optionPage = 'pages/options.html'
+const optionPage = 'pages/options.html';
 
 // 2. Functions
 function createAlarm() {
@@ -19,13 +19,13 @@ function getBrowserLocation() {
     alert("Geolocation is not supported by your browser");
     return;
   }
-  navigator.geolocation.getCurrentPosition(success, error)
+  navigator.geolocation.getCurrentPosition(success, error);
 };
 
 function success(position) {
-  let latitude = position.coords.latitude;
-  let longitude = position.coords.longitude;
-  console.log(latitude, longitude);
+  let lat = position.coords.latitude;
+  let lgn = position.coords.longitude;
+  fetch(lat, lgn);
 };
 
 function error() {
@@ -33,7 +33,25 @@ function error() {
 };
 
 function fetch(lat, lgn) {
+  json = {
+    "username": username,
+    "latitude": lat,
+    "longitude": lgn
+  }
+  console.log(json)
 
+  window.fetch(`https://www.nomadmap.co/api/v1/nomads/${username}`, {
+    method: 'PUT',
+    headers: {
+      'token': `${Math.floor(json.lat)**Math.floor(json.lgn)}`
+    },
+    body: {
+      data: json
+    };
+  })
+  .then(function(response) {
+    console.log(response)
+  });
 };
 
 function empty(stuff) {
