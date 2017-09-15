@@ -1,46 +1,48 @@
+// 1. Variables
 const usernameInput = document.querySelector('input#username');
 const saveBtn = document.querySelector('button#save');
 const status = document.querySelector('div#status-container');
 
+const wrongUsername = 'The username you specified does not exist on Nomadmap &#x1F631'
+const emptyData = 'No username specified &#x1F631'
+const success = 'Your username was synced &#x1F64F Your position will be updated as you move around &#x1F4AA'
+
+// 2. Functions
+function print(message) {
+  status.innerHTML = message
+
+  window.setTimeout(() => {
+    status.innerHTML = '';
+  }, 5000);
+};
 
 function empty(username) {
   if (!username) {
-    alert('No username specified');
-    return true;
-  };
-};
-
-function fetching(username) {
-  let result;
-
-  window.fetch(`https://www.nomadmap.co/api/v1/nomads/${username}`)
-  .then(response => response.json())
-  .then(data => {
-    result = data
-    console.log(result)
-  });
-
-  return result
-};
-
-function invalid(json) {
-  if (json.error) {
-    alert('The username you specified does not exist on Nomadmap');
+    print(emptyData)
     return true
   };
 };
 
-function storeData() {
-  // store data
-  chrome.storage.sync.set({
-    username: username,
-  }, () => {
-    status.textContent = 'Username saved!';
-
-    window.setTimeout(() => {
-      status.textContent = '';
-    }, 4000);
+function fetching(username) {
+  window.fetch(`https://www.nomadmap.co/api/v1/nomads/${username}`)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data)
+    if (invalid(data)) {return}
+    store(data.username)
   });
+};
+
+function invalid(json) {
+  if (json.error) {
+    print(wrongUsername)
+    return true
+  };
+};
+
+function store(username) {
+  localStorage.setItem('username', username);
+  print(success)
 };
 
 // function retrieveEmail() {
@@ -53,7 +55,6 @@ function storeData() {
 //   });
 // };
 
-
 function init() {
   let username = usernameInput.value;
   console.log(username);
@@ -62,16 +63,10 @@ function init() {
   if (empty(username)) {return};
 
   // calling API to get JSON
-  let apiCallback = fetching(username)
-  console.log(apiCallback)
-
-  // Return if invalid username
-  if (invalid(apiCallback)) {return}
-
-  // storing username in local storage
-  // store(username)
+  fetching(username)
 };
 
+// 3. Events
 // document.addEventListener('DOMContentLoaded', retrieveEmail);
 saveBtn.addEventListener('click', init);
 
