@@ -1,17 +1,20 @@
 // 1. Variables
 const usernameInput = document.querySelector('input#username');
 const saveBtn = document.querySelector('button#save');
-const status = document.querySelector('div#status-container');
+const status = document.querySelector('h3#status-container');
 
 const wrongUsername = 'The username you specified does not exist on Nomadmap &#x1F631'
 const emptyData = 'No username specified &#x1F631'
 const success = 'Your username was synced &#x1F64F Your position will be updated as you move around &#x1F4AA'
 
+let timeoutID = 0;
+
 // 2. Functions
 function print(message) {
   status.innerHTML = message
+  window.clearTimeout(timeoutID);
 
-  window.setTimeout(() => {
+  timeoutID = window.setTimeout(() => {
     status.innerHTML = '';
   }, 5000);
 };
