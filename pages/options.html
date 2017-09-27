@@ -5,14 +5,18 @@
 </head>
 
 <body>
-  <h1>Please enter your username</h1>
-  <div>It's usually this format: NameSurname.</div>
-  <div>Don't remember your usuername? It's in <a href="https://www.nomadmap.co/nomads">your profile</a></div>
+  <h1>Please enter your username & API Key</h1>
   <br>
 
-  <div class="username-container">
+  <div class="form-container">
     <input placeholder="Your username goes here" size="40" type="text" id="username" name="username" />
-    <button id="save">Save</button>
+    <div>Don't remember your usuername? Check <a href="https://www.nomadmap.co/nomads" target="_blank">your profile</a></div>
+    <br>
+
+    <input placeholder="Your api key goes here" size="40" type="text" id="token" name="token" />
+    <div>Don't know your api token? Check <a href="https://www.nomadmap.co/nomads" target="_blank">this page</a></div>
+    <br>
+    <button id="save" style="width: 150px">Save</button>
   </div>
 
   <br>
