@@ -11,7 +11,7 @@ const feedback = {
   'empty token': 'No token given',
   'wrong token': 'The token you entered is incorrect.',
   'success': 'Your username is now synced. Feel free to move around, we got you covered!'
-}
+};
 
 
 // 2. Functions
@@ -20,7 +20,6 @@ function print(stuff) {
   let content = document.createTextNode(stuff);
   message.appendChild(content);
   status.appendChild(message);
-
 
   window.setTimeout(() => {
     status.querySelector('p:first-child').remove();
@@ -59,24 +58,26 @@ function checkUsername() {
   .then(response => response.json())
   .then(data => {
     console.log(data)
-    if (invalid(data)) {return}
+    if (invalid(data)) {return};
     localStorage.setItem('username', data.username);
     localStorage.setItem('email', data.email);
     localStorage.setItem('latitude', data.latitude);
     localStorage.setItem('longitude', data.longitude);
+
+    // Check if PATCH is working. Saves token if so.
     checkToken();
   });
 };
 
 function checkToken() {
   let lat = parseInt(localStorage.getItem('latitude')),
-      lgn = parseInt(localStorage.getItem('longitude'));
-  let payload = JSON.stringify({
-    nomad: {
-      latitude: lat,
-      longitude: lgn
-    }
-  });
+      lgn = parseInt(localStorage.getItem('longitude')),
+      payload = JSON.stringify({
+        nomad: {
+          latitude: lat,
+          longitude: lgn
+        }
+      });
 
   window.fetch(`https://www.nomadmap.co/api/v1/nomads/${username.value}`, {
     method: 'PATCH',
@@ -96,10 +97,10 @@ function checkToken() {
 };
 
 function init() {
-  // Return if empty
+  // Return if one of inputs is empty
   if (emptyInputs(username.value, token.value)) {return};
 
-  // calling API to get JSON
+  // Get API to validate username
   checkUsername(username.value);
 };
 
