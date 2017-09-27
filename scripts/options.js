@@ -26,18 +26,18 @@ function print(detail) {
 };
 
 function emptyInputs(username, token) {
-  let condition1 = !username,
-      condition2 = !token;
+  let emptyUsername = !username,
+      emptyToken = !token;
 
-  if (condition1) {
+  if (emptyUsername) {
     print(feedback['empty username']);
   };
 
-  if (condition2) {
+  if (emptyToken) {
     print(feedback['empty token']);
   };
 
-  if (condition1 || condition2) {return true};
+  if (emptyUsername || emptyToken) {return true};
 };
 
 function emptyToken(token) {
@@ -82,7 +82,6 @@ function store(username) {
 function init() {
   let username = usernameInput.value;
   let token = tokenInput.value;
-  console.log(username);
 
   // Return if empty
   if (emptyInputs(username, token)) {return};
