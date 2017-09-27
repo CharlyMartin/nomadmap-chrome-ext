@@ -1,33 +1,35 @@
 // 1. Variables
-const usernameInput = document.querySelector('input#username');
-const tokenInput = document.querySelector('input#token');
 const saveBtn = document.querySelector('button#save');
 const status = document.querySelector('#status-container');
+
+const username = document.querySelector('input#username');
+const token = document.querySelector('input#token');
 
 const feedback = {
   'empty username': 'No username specified',
   'wrong username': 'The username you specified does not exist on Nomadmap',
   'empty token': 'No token given',
-  'success': 'Your username was synced! Your position will be updated as you move around'
+  'wrong token': 'The token you entered is incorrect.',
+  'success': 'Your username is now synced. Feel free to move around, we got you covered!'
 }
 
 
 // 2. Functions
-function print(detail) {
+function print(stuff) {
   message = document.createElement("p");
-  let content = document.createTextNode(detail);
+  let content = document.createTextNode(stuff);
   message.appendChild(content);
   status.appendChild(message);
 
 
   window.setTimeout(() => {
     status.querySelector('p:first-child').remove();
-  }, 5000);
+  }, 4000);
 };
 
-function emptyInputs(username, token) {
-  let emptyUsername = !username,
-      emptyToken = !token;
+function emptyInputs(un, t) {
+  let emptyUsername = !un,
+      emptyToken = !t;
 
   if (emptyUsername) {
     print(feedback['empty username']);
@@ -40,54 +42,65 @@ function emptyInputs(username, token) {
   if (emptyUsername || emptyToken) {return true};
 };
 
-function emptyToken(token) {
-  if (!token) {
-    print(feedback['empty token']);
+function invalid(data) {
+  let error = data.error
+  if (error === "Internal Server Error") {
+    print(feedback['wrong username'])
+    return true
+  };
+  if (error === "You need to sign in or sign up before continuing.") {
+    print(feedback['wrong token'])
     return true
   };
 };
 
-function fetching(username) {
-  window.fetch(`https://www.nomadmap.co/api/v1/nomads/${username}`)
+function checkUsername() {
+  window.fetch(`https://www.nomadmap.co/api/v1/nomads/${username.value}`)
   .then(response => response.json())
   .then(data => {
     console.log(data)
     if (invalid(data)) {return}
-    store(data.username)
+    localStorage.setItem('username', data.username);
+    localStorage.setItem('email', data.email);
+    localStorage.setItem('latitude', data.latitude);
+    localStorage.setItem('longitude', data.longitude);
+    checkToken();
   });
 };
 
-function invalid(json) {
-  if (json.error) {
-    print(wrongUsername)
-    return true
-  };
+function checkToken() {
+  let lat = parseInt(localStorage.getItem('latitude')),
+      lgn = parseInt(localStorage.getItem('longitude'));
+  let payload = JSON.stringify({
+    nomad: {
+      latitude: lat,
+      longitude: lgn
+    }
+  });
+
+  window.fetch(`https://www.nomadmap.co/api/v1/nomads/${username.value}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-User-Token': `${token.value}`,
+      'X-User-Email': `${localStorage.getItem('email')}`
+    },
+    body: payload
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (invalid(data)) {return};
+    localStorage.setItem('token', token.value);
+    print(feedback['success']);
+  });
 };
-
-function store(username) {
-  localStorage.setItem('username', username);
-  print(success)
-};
-
-// function retrieveEmail() {
-//   console.log("Retrieving Email...");
-
-//   chrome.storage.sync.get({
-//     username: 'username'
-//   }, function(items) {
-//     username = items.username;
-//   });
-// };
 
 function init() {
-  let username = usernameInput.value;
-  let token = tokenInput.value;
-
   // Return if empty
-  if (emptyInputs(username, token)) {return};
+  if (emptyInputs(username.value, token.value)) {return};
 
   // calling API to get JSON
-  fetching(username)
+  checkUsername(username.value);
 };
 
 // 3. Events
