@@ -1,27 +1,33 @@
 // 1. Variables
 const usernameInput = document.querySelector('input#username');
+const tokenInput = document.querySelector('input#token');
 const saveBtn = document.querySelector('button#save');
-const status = document.querySelector('h3#status-container');
+const status = document.querySelector('#status-container');
 
-const wrongUsername = 'The username you specified does not exist on Nomadmap &#x1F631'
-const emptyData = 'No username specified &#x1F631'
-const success = 'Your username was synced &#x1F64F Your position will be updated as you move around &#x1F4AA'
+const feedback = {
+  'empty username': 'No username specified',
+  'wrong username': 'The username you specified does not exist on Nomadmap',
+  'empty token': 'No token given',
+  'success': 'Your username was synced! Your position will be updated as you move around'
+}
 
-let timeoutID = 0;
 
 // 2. Functions
-function print(message) {
-  status.innerHTML = message
-  window.clearTimeout(timeoutID);
+function print(detail) {
+  message = document.createElement("li");
+  let content = document.createTextNode(detail);
+  message.appendChild(content);
+  status.appendChild(message);
 
-  timeoutID = window.setTimeout(() => {
-    status.innerHTML = '';
-  }, 5000);
+
+  window.setTimeout(() => {
+    status.querySelector('li:first-child').remove();
+  }, 1000);
 };
 
 function empty(username) {
   if (!username) {
-    print(emptyData)
+    print(feedback['empty username']);
     return true
   };
 };
@@ -60,6 +66,7 @@ function store(username) {
 
 function init() {
   let username = usernameInput.value;
+  let token = tokenInput.value;
   console.log(username);
 
   // Return if empty
