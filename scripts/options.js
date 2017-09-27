@@ -14,20 +14,35 @@ const feedback = {
 
 // 2. Functions
 function print(detail) {
-  message = document.createElement("li");
+  message = document.createElement("p");
   let content = document.createTextNode(detail);
   message.appendChild(content);
   status.appendChild(message);
 
 
   window.setTimeout(() => {
-    status.querySelector('li:first-child').remove();
-  }, 1000);
+    status.querySelector('p:first-child').remove();
+  }, 5000);
 };
 
-function empty(username) {
-  if (!username) {
+function emptyInputs(username, token) {
+  let condition1 = !username,
+      condition2 = !token;
+
+  if (condition1) {
     print(feedback['empty username']);
+  };
+
+  if (condition2) {
+    print(feedback['empty token']);
+  };
+
+  if (condition1 || condition2) {return true};
+};
+
+function emptyToken(token) {
+  if (!token) {
+    print(feedback['empty token']);
     return true
   };
 };
@@ -70,7 +85,7 @@ function init() {
   console.log(username);
 
   // Return if empty
-  if (empty(username)) {return};
+  if (emptyInputs(username, token)) {return};
 
   // calling API to get JSON
   fetching(username)
