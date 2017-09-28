@@ -1,22 +1,10 @@
 // 1. Variables
-const alarm = 'Daily Location Update',
-      optionPage = 'pages/options.html';
-
 let username = localStorage.getItem('username'),
     email = localStorage.getItem('email'),
     token = localStorage.getItem('username');
 
 
 // 2. Functions
-function createAlarm() {
-  console.log(arguments.callee.name);
-
- chrome.alarms.create(alarm, {
-   periodInMinutes: (1)
-   // periodInMinutes: (60 * 12)
- });
-};
-
 function getBrowserLocation() {
   console.log(arguments.callee.name);
 
@@ -59,14 +47,6 @@ function updateAPI(lat, lgn) {
     console.log(data)
   });
 };
-
-function empty(stuff) {
-  if (stuff === null) {return true};
-};
-
-function open(tab) {
-  chrome.tabs.create({url: tab});
-}
 
 
 // 3. Events
