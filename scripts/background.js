@@ -17,10 +17,10 @@ function open(tab) {
 
 
 // 3. Events
-chrome.alarms.onAlarm.addListener(getBrowserLocation);
-
 chrome.runtime.onInstalled.addListener(function(details){
   if (empty(email) || empty(username) || empty(token)) {
     open(optionPage);
   };
 });
+
+chrome.alarms.onAlarm.addListener(console.log('coco'));

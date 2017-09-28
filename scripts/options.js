@@ -80,8 +80,8 @@ function checkUsername() {
 };
 
 function checkToken() {
-  let lat = parseInt(localStorage.getItem('latitude')),
-      lgn = parseInt(localStorage.getItem('longitude')),
+  let lat = parseFloat(localStorage.getItem('latitude')),
+      lgn = parseFloat(localStorage.getItem('longitude')),
       payload = JSON.stringify({
         nomad: {
           latitude: lat,
