@@ -1,7 +1,7 @@
 // 1. Variables
 const saveBtn = document.querySelector('button#save'),
       status = document.querySelector('#status-container'),
-      alarm = 'Daily Location Update',
+      alarmName = 'Daily Location Update',
       username = document.querySelector('input#username'),
       token = document.querySelector('input#token'),
       feedback = {
@@ -41,10 +41,11 @@ function emptyInputs(un, t) {
 };
 
 function createAlarm() {
- chrome.alarms.create(alarm, {
-   periodInMinutes: (1)
-   // periodInMinutes: (60 * 12)
- });
+  console.log(arguments.callee.name);
+  chrome.alarms.create(alarmName, {
+    delayInMinutes: 1,
+    periodInMinutes: 1
+  });
 };
 
 function invalid(data) {
