@@ -3,7 +3,7 @@ const optionPage = 'pages/options.html';
 
 let username = localStorage.getItem('username'),
     email = localStorage.getItem('email'),
-    token = localStorage.getItem('username');
+    token = localStorage.getItem('token');
 
 
 // 2. Functions
