@@ -2,7 +2,7 @@
   "name": "Nomadmap: Location Auto-Update",
   "description": "Automatically update your location on Nomadmap as you move around",
   "author": "Charly MARTIN",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "manifest_version": 2,
 
   "permissions": [
@@ -10,6 +10,7 @@
     "alarms",
     "background",
     "geolocation",
+    "notifications",
     "http://*/",
     "https://*/"
   ],

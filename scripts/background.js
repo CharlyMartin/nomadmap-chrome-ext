@@ -1,7 +1,11 @@
 // 1. Variables
-const alarm = 'Daily Location Update';
-let username = localStorage.getItem("username");
-const optionPage = 'pages/options.html';
+const alarm = 'Daily Location Update',
+      optionPage = 'pages/options.html';
+
+let username = localStorage.getItem('username'),
+    email = localStorage.getItem('email'),
+    token = localStorage.getItem('username');
+
 
 // 2. Functions
 function createAlarm() {
@@ -9,6 +13,7 @@ function createAlarm() {
 
  chrome.alarms.create(alarm, {
    periodInMinutes: (1)
+   // periodInMinutes: (60 * 12)
  });
 };
 
@@ -22,33 +27,36 @@ function getBrowserLocation() {
   navigator.geolocation.getCurrentPosition(success, error);
 };
 
-function success(position) {
-  let lat = position.coords.latitude;
-  let lgn = position.coords.longitude;
-  fetch(lat, lgn);
+function success(response) {
+  let lat = response.coords.latitude;
+  let lgn = response.coords.longitude;
+  updateAPI(lat, lgn);
 };
 
 function error() {
-  alert("You did not give access to your position")
+  alert("You did not give us access to your position.")
 };
 
-function fetch(lat, lgn) {
-  json = {
-    "username": username,
-    "latitude": lat,
-    "longitude": lgn
-  }
-  console.log(json)
+function updateAPI(lat, lgn) {
+  payload = JSON.stringify({
+    nomad: {
+      latitude: lat,
+      longitude: lgn
+    }
+  });
 
   window.fetch(`https://www.nomadmap.co/api/v1/nomads/${username}`, {
-    method: 'PUT',
-    headers:  new Headers({
+    method: 'PATCH',
+    headers: {
       'Content-Type': 'application/json',
-      'token': `${Math.floor(json.lat)**Math.floor(json.lgn)}`
-    }),
-    body: {
-      data: json
-    }
+      'X-User-Token': `${token}`,
+      'X-User-Email': `${email}`
+    },
+    body: payload
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data)
   });
 };
 
@@ -60,52 +68,12 @@ function open(tab) {
   chrome.tabs.create({url: tab});
 }
 
-// chrome.alarms.create("daily-location-update", {
-//     "periodInMinutes": 60 * 12
-// });
-
-// chrome.alarms.onAlarm.addListener(function(alarm) {
-//     if (navigator.geolocation) {
-//         navigator.geolocation.getCurrentPosition(function (response) {
-// 	    var xhr = new XMLHttpRequest();
-// 	    var latitude = response.coords.latitude;
-// 	    var longitude = response.coords.longitude;
-
-// 	    getLocation(latitude, longitude);
-// 	});
-//     }
-// });
-
-
-// function getLocation(latitude, longitude) {
-//     chrome.storage.sync.get({
-//         email: ''
-//     }, function (items) {
-// 	if (items.email == null)
-// 	    return;
-
-// 	var json_upload = JSON.stringify({
-// 	    longitude: longitude,
-// 	    latitude: latitude,
-// 	    email: items.email
-// 	});
-
-// 	function callback () {
-// 	    console.log(this.responseText);
-// 	}
-
-// 	var xmlhttp = new XMLHttpRequest();
-// 	xmlhttp.addEventListener("load", callback);
-// 	xmlhttp.open("PUT", "https://digital-nomad-map.herokuapp.com/api/update");
-// 	xmlhttp.setRequestHeader("Content-Type", "application/json");
-// 	xmlhttp.send(json_upload);
-//     });
-// }
 
 // 3. Events
 chrome.alarms.onAlarm.addListener(getBrowserLocation);
 
 chrome.runtime.onInstalled.addListener(function(details){
-    if (empty(username)) {open(optionPage)};
-    createAlarm();
+  if (empty(email) || empty(username) || empty(token)) {
+    open(optionPage);
+  };
 });

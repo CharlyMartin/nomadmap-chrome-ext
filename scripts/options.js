@@ -23,7 +23,7 @@ function print(stuff) {
 
   window.setTimeout(() => {
     status.querySelector('p:first-child').remove();
-  }, 4000);
+  }, 5000);
 };
 
 function emptyInputs(un, t) {
@@ -105,7 +105,6 @@ function init() {
 };
 
 // 3. Events
-// document.addEventListener('DOMContentLoaded', retrieveEmail);
 saveBtn.addEventListener('click', init);
 
 // chrome-extension://hplnkkekimoegbellfpjmnekdkcjlkfg/pages/options.html
