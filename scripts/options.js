@@ -43,8 +43,8 @@ function emptyInputs(un, t) {
 function createAlarm() {
   console.log(arguments.callee.name);
   chrome.alarms.create(alarmName, {
-    delayInMinutes: 1,
-    periodInMinutes: 1
+    delayInMinutes: (60 * 6),
+    periodInMinutes: (60 * 6)
   });
 };
 
