@@ -25,9 +25,9 @@ function print(stuff) {
   }, 5000);
 };
 
-function emptyInputs(un, t) {
-  let emptyUsername = !un,
-      emptyToken = !t;
+function emptyInputs(name, key) {
+  let emptyUsername = !name,
+      emptyToken = !key;
 
   if (emptyUsername) {
     print(feedback['empty username']);
