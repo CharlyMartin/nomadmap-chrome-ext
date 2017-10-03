@@ -2,7 +2,7 @@
   "name": "Nomadmap: Location Auto-Update",
   "description": "Automatically update your location on Nomadmap as you move around",
   "author": "Charly MARTIN",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "manifest_version": 2,
 
   "permissions": [
@@ -16,15 +16,15 @@
   ],
 
   "background": {
-    "scripts": ["scripts/background.js"]
+    "scripts": ["background.js"]
   },
 
   "options_ui": {
-    "page": "pages/options.html",
+    "page": "options.html",
     "chrome_style": true
   },
 
   "icons": {
-    "160": "assets/favicon.png"
+    "160": "favicon.png"
   }
 }

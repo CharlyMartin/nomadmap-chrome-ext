@@ -117,4 +117,4 @@ function init() {
 // 3. Events
 saveBtn.addEventListener('click', init);
 
-// chrome-extension://hplnkkekimoegbellfpjmnekdkcjlkfg/pages/options.html
+// chrome-extension://hplnkkekimoegbellfpjmnekdkcjlkfg/options.html
