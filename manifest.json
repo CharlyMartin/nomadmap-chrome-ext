@@ -1,8 +1,9 @@
 {
   "name": "Nomadmap: Location Auto-Update",
+  "short_name": "Nomadmap Update",
   "description": "Automatically update your location on Nomadmap as you move around",
   "author": "Charly MARTIN",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "manifest_version": 2,
 
   "permissions": [

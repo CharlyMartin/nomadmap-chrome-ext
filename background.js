@@ -1,5 +1,5 @@
 // 1. Variables
-const optionPage = 'pages/options.html';
+const optionPage = 'options.html';
 
 let username = localStorage.getItem('username'),
     email = localStorage.getItem('email'),
